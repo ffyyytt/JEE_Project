@@ -58,15 +58,15 @@ public class Responsable {
 
 
         Enseignant enseignant1 = new Enseignant();
-        enseignant1.setData("DUONG", "Anh-Kiet-1", 192L, 0.7F, "FST", "AI"); // CM:90, TD: 60, TP: 42
+        enseignant1.setData("DUONG", "Anh-Kiet-1", 192L, 0.7F, "FST", null); // CM:90, TD: 60, TP: 42
         addEnseignant(enseignant1);
 
         Enseignant enseignant2 = new Enseignant();
-        enseignant2.setData("DUONG", "Anh-Kiet-2", 384L, 0.7F, "FST", "Crypto"); // CM: 180, TD: 120, TP: 84
+        enseignant2.setData("DUONG", "Anh-Kiet-2", 384L, 0.7F, "FST", null); // CM: 180, TD: 120, TP: 84
         addEnseignant(enseignant2);
 
         Enseignant enseignant3 = new Enseignant();
-        enseignant3.setData("DUONG", "Anh-Kiet-3", 64L, 0.7F, "FST", "Java"); // CM: 30, TD: 20, TP: 14
+        enseignant3.setData("DUONG", "Anh-Kiet-3", 64L, 0.7F, "FST", null); // CM: 30, TD: 20, TP: 14
         addEnseignant(enseignant3);
 
         List<Enseignant> enseignants1 = new ArrayList<Enseignant>();

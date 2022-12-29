@@ -4,7 +4,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnit;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestScoped
@@ -13,17 +12,17 @@ public class Scolarite extends Responsable {
     EntityManager entityManager;
 
     @Transactional
-    public List getUEs()
+    public List<UE> getUEs()
     {
-        List result = entityManager.createQuery("select u from UE u").getResultList();
+        List<UE> result = entityManager.createQuery("select  object(u) from UE u").getResultList();
         return result;
     }
 
     @Transactional
     public UE getUE(Long id)
     {
-        UE ue = (UE) entityManager.createQuery("select u from UE u where u.id = :id")
+        UE result = (UE) entityManager.createQuery("select object(u) from UE u where u.id = :id")
                 .setParameter("id", id).getSingleResult();
-        return ue;
+        return result;
     }
 }
