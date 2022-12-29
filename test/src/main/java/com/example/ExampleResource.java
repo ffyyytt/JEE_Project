@@ -10,22 +10,22 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/")
-public class Main {
+public class ExampleResource {
     @Inject
     private Scolarite scolarite;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String index() {
+    public String hello() {
         scolarite.init();
-        return "hello";
+        return "Hello from RESTEasy Reactive";
     }
 
     @GET
     @Path("/getUEs")
     public String getEnseignants()
     {
-        List ues = scolarite.getUEs();
+        List ues = scolarite.getUes();
         String result = new Gson().toJson(ues);
         return result;
     }

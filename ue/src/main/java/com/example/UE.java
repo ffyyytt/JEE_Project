@@ -22,7 +22,7 @@ public class UE {
     public Long groupesTD;
     public Long groupesTP;
 
-    @ManyToMany(targetEntity = Enseignant.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Enseignant.class)
     @JoinTable(name = "UE_ENSEIGNANT",
             joinColumns = @JoinColumn(name = "UE_ID", foreignKey = @ForeignKey(name = "FK_UE")),
             inverseJoinColumns = @JoinColumn(name = "ENSEIGNANT_ID", foreignKey = @ForeignKey(name = "FK_ENSEIGNANT")))
