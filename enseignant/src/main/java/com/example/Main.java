@@ -1,6 +1,6 @@
 package com.example;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -26,7 +26,7 @@ public class Main {
     public String getEnseignants()
     {
         List<Enseignant> enseignants = RH.getEnseignants();
-        String result = new Gson().toJson(enseignants);
+        String result = new GsonBuilder().setPrettyPrinting().create().toJson(enseignants);
         return result;
     }
 
@@ -37,7 +37,7 @@ public class Main {
         if (id != null)
         {
             Enseignant enseignant = RH.getEnseignant(id);
-            String result = new Gson().toJson(enseignant);
+            String result = new GsonBuilder().setPrettyPrinting().create().toJson(enseignant);
             return result;
         }
         else
