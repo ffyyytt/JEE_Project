@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RequestScoped
-public class RessourcesHumaines {
+public class RessourcesHumaines extends Responsable {
     @PersistenceUnit
     EntityManager entityManager;
 
@@ -22,11 +22,5 @@ public class RessourcesHumaines {
     {
         return (Enseignant) entityManager.createQuery("select object(e) from Enseignant e where e.id = :id")
                 .setParameter("id", id).getSingleResult();
-    }
-
-    @Transactional
-    public void addEnseignant(Enseignant enseignant)
-    {
-        entityManager.persist(enseignant);
     }
 }
