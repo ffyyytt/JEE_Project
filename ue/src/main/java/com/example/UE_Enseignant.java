@@ -3,7 +3,6 @@ package com.example;
 import io.smallrye.common.constraint.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "UE_ENSEIGNANT")

@@ -1,6 +1,6 @@
 package com.example;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -26,7 +26,7 @@ public class Main {
     public String getEnseignants()
     {
         List ues = scolarite.getUEs();
-        String result = new Gson().toJson(ues);
+        String result = new GsonBuilder().setPrettyPrinting().create().toJson(ues);
         return result;
     }
 }
