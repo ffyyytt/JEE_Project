@@ -5,8 +5,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnit;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 @RequestScoped
 public class Responsable {

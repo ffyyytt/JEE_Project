@@ -18,8 +18,9 @@ public class RessourcesHumaines extends Responsable {
     }
 
     @Transactional
-    public Enseignant getEnseignant(Long id)
-    {
+    public Enseignant getEnseignant(Long id) throws Exception {
+        if (id >= countEnseignant())
+            throw new Exception("No data");
         return (Enseignant) entityManager.createQuery("select object(e) from Enseignant e where e.id = :id")
                 .setParameter("id", id).getSingleResult();
     }

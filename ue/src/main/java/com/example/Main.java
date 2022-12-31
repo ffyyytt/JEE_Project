@@ -1,14 +1,12 @@
 package com.example;
 
-import com.google.gson.GsonBuilder;
-
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -22,10 +20,11 @@ public class Main {
     {
         try {
             logger = configLogger(Logger.getLogger("scolarite"), "scolarite.log");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -35,7 +34,8 @@ public class Main {
 
     @GET
     @Path("/getUEs")
-    public String getUEs()
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUEs()
     {
         logger.info("getUEs");
         String result = "[\n";
@@ -44,26 +44,30 @@ public class Main {
         {
             result += resList.get(i).toFullJSON() + ",\n";
         }
-        return result.substring(0, result.length()-2) + "\n]";
+        result = result.substring(0, result.length()-2) + "\n]";
+        return Response.ok(result, MediaType.TEXT_PLAIN).build();
     }
 
     @GET
     @Path("/getUE")
-    public String getUE(@QueryParam("id") Long id)
-    {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUE(@QueryParam("id") Long id) {
         logger.info("getUE: " + id);
         if (id != null)
         {
-            UE ue = scolarite.getUE(id);
-            return ue.toFullJSON();
+            UE ue = null;
+            try {
+                ue = scolarite.getUE(id);
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                return new ExceptionMapper().toResponse(e);
+            }
+            return Response.ok(ue.toFullJSON(), MediaType.TEXT_PLAIN).build();
         }
-        else
-        {
-            return getUEs();
-        }
+        return Response.status(500).entity(null).type(MediaType.TEXT_PLAIN).build();
     }
 
-    private Logger configLogger(Logger logger, String filename) throws IOException {
+    private Logger configLogger(Logger logger, String filename) throws Exception {
         FileHandler fh = new FileHandler(filename);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);

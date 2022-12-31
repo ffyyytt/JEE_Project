@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -38,31 +39,43 @@ public class Main {
     @GET
     @Path("/getEUofEnseignant")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getEUofEnseignant(@QueryParam("id") Long id) {
+    public Response getEUofEnseignant(@QueryParam("id") Long id) {
         logger.info("getEUofEnseignant: " + id);
-        if (id != null && id <= departement.countEnseignant())
+        if (id != null)
         {
             String[] columnName = {"", "", "\"id\": ", "\"nom\": ", "\"semestre\": ", "\"groupesCM\": ", "\"groupesTD\": ", "\"groupesTP\": ", "\"heuresCM\": ", "\"heuresTD\": ",  "\"heuresTP\": "};
-            List resList = departement.getEUofEnseignant(id);
+            List resList = null;
+            try {
+                resList = departement.getEUofEnseignant(id);
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                return new ExceptionMapper().toResponse(e);
+            }
             String result = new GsonBuilder().setPrettyPrinting().create().toJson(resList);
-            return formatJSON(columnName, result);
+            return Response.ok(formatJSON(columnName, result), MediaType.TEXT_PLAIN).build();
         }
-        return "{}";
+        return Response.status(500).entity(null).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Path("/getEnseignantofEU")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getEnseignantofEU(@QueryParam("id") Long id) {
+    public Response getEnseignantofEU(@QueryParam("id") Long id) {
         logger.info("getEnseignantofEU: " + id);
-        if (id != null && id <= departement.countUE())
+        if (id != null)
         {
             String[] columnName = {"", "", "\"id\": ", "\"prenom\": ", "\"nom\": ", "\"departement\": ", "\"equivalence\": ", "\"heuresCM\": ", "\"heuresTD\": ", "\"heuresTP\": "};
-            List resList = departement.getEnseignantofEU(id);
+            List resList = null;
+            try {
+                resList = departement.getEnseignantofEU(id);
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                return new ExceptionMapper().toResponse(e);
+            }
             String result = new GsonBuilder().setPrettyPrinting().create().toJson(resList);
-            return formatJSON(columnName, result);
+            return Response.ok(formatJSON(columnName, result), MediaType.TEXT_PLAIN).build();
         }
-        return "{}";
+        return Response.status(500).entity(null).type(MediaType.APPLICATION_JSON).build();
     }
 
     private int getPre(String s)

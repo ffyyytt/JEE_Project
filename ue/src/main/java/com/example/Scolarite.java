@@ -19,8 +19,9 @@ public class Scolarite extends Responsable {
     }
 
     @Transactional
-    public UE getUE(Long id)
-    {
+    public UE getUE(Long id) throws Exception {
+        if (id >= countUE())
+            throw new Exception("No data");
         UE result = (UE) entityManager.createQuery("select object(u) from UE u where u.id = :id")
                 .setParameter("id", id).getSingleResult();
         return result;

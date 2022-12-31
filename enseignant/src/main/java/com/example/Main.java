@@ -1,13 +1,12 @@
 package com.example;
 
-import com.google.gson.GsonBuilder;
-
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -49,18 +48,21 @@ public class Main {
 
     @GET
     @Path("/getEnseignant")
-    public String getEnseignant(@QueryParam("id") Long id)
+    public Response getEnseignant(@QueryParam("id") Long id)
     {
         logger.info("getEnseignant: "+id);
-        if (id != null && id <= RH.countEnseignant())
+        if (id != null)
         {
-            Enseignant enseignant = RH.getEnseignant(id);
-            return enseignant.toFullJSON();
+            Enseignant enseignant = null;
+            try {
+                enseignant = RH.getEnseignant(id);
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                return new ExceptionMapper().toResponse(e);
+            }
+            return Response.ok(enseignant.toFullJSON(), MediaType.TEXT_PLAIN).build();
         }
-        else
-        {
-            return getEnseignants();
-        }
+        return Response.status(500).entity(null).type(MediaType.TEXT_PLAIN).build();
     }
 
     private Logger configLogger(Logger logger, String filename) throws IOException {

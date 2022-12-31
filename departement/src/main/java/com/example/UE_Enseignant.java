@@ -3,6 +3,9 @@ package com.example;
 import io.smallrye.common.constraint.NotNull;
 
 import javax.persistence.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.util.List;
 
 @Entity
@@ -166,5 +169,13 @@ class Enseignant {
                 ",\n\t\"departement\": \"" + departement + "\"" +
                 ",\n\t\"service\": " + serviceJSON() +
                 "\n}";
+    }
+}
+
+@Provider
+class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<Exception> {
+    @Override
+    public Response toResponse(Exception exception) {
+        return Response.status(500).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
     }
 }
