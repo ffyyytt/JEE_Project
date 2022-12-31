@@ -1,5 +1,6 @@
 package com.example;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -17,12 +19,15 @@ public class Main {
     @Inject
     private Scolarite scolarite;
     Logger logger;
-    {
+
+    @PostConstruct
+    public void init() {
         try {
             logger = configLogger(Logger.getLogger("scolarite"), "scolarite.log");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
+        logger.info("init");
     }
 
 
@@ -67,7 +72,7 @@ public class Main {
         return Response.status(500).entity(null).type(MediaType.TEXT_PLAIN).build();
     }
 
-    private Logger configLogger(Logger logger, String filename) throws Exception {
+    private Logger configLogger(Logger logger, String filename) throws IOException {
         FileHandler fh = new FileHandler(filename);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);

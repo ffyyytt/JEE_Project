@@ -1,5 +1,6 @@
 package com.example;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,12 +19,15 @@ public class Main {
     @Inject
     private RessourcesHumaines RH;
     Logger logger;
-    {
+
+    @PostConstruct
+    public void init() {
         try {
             logger = configLogger(Logger.getLogger("ressourcesHumaines"), "ressourcesHumaines.log");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        logger.info("init");
     }
 
     @GET

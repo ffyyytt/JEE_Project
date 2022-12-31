@@ -2,6 +2,7 @@ package com.example;
 
 import com.google.gson.GsonBuilder;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,19 +21,23 @@ public class Main {
     @Inject
     private Departement departement;
     Logger logger;
-    {
+
+
+    @PostConstruct
+    public void init() {
         try {
             logger = configLogger(Logger.getLogger("departement"), "departement.log");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        departement.init();
+        logger.info("init");
     }
 
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String index() {
-        departement.init();
         return "Hello";
     }
 
